@@ -13,6 +13,7 @@ const TEMPLATES = [
   'Dashboard (real-time data)',
   'Interactive Tool (forms, prompts)',
   'CLI Wrapper (wrap existing CLI)',
+  'CLI Tool (minimal: box + text + useKeymap)',
   'File Manager',
 ];
 
@@ -21,6 +22,7 @@ const TEMPLATE_KEYS = [
   'dashboard',
   'interactive-tool',
   'cli-wrapper',
+  'cli-tool',
   'file-manager',
 ] as const;
 const FEATURES = ['Screen Router', 'Data Providers', 'Hot Reload'];
