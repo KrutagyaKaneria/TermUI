@@ -1,6 +1,6 @@
 // AppShell — full-screen application layout
 import { Widget } from '@termuijs/widgets';
-import { type Screen, type Rect, type LayoutNode, createLayoutNode, mergeStyles, defaultStyle } from '@termuijs/core';
+import { type Screen, type Rect, type LayoutNode, type KeyEvent, createLayoutNode, mergeStyles, defaultStyle } from '@termuijs/core';
 
 export interface AppShellOptions {
     header?: Widget;
@@ -26,11 +26,6 @@ export class AppShell extends Widget {
         this._sidebar = options.sidebar;
         this._main = options.main;
         this._sidebarWidth = Math.max(0, Math.floor(options.sidebarWidth ?? 20));
-
-        if (this._header) super.addChild(this._header);
-        if (this._footer) super.addChild(this._footer);
-        if (this._sidebar) super.addChild(this._sidebar);
-        super.addChild(this._main);
     }
 
     get sidebarVisible(): boolean {
@@ -53,6 +48,29 @@ export class AppShell extends Widget {
 
     handleResize(cols: number, rows: number): void {
         this.updateRect({ x: 0, y: 0, width: cols, height: rows });
+        this.markDirty();
+    }
+
+    scrollUp(lines = 1): void {
+        this._mainScrollOffset = Math.max(0, this._mainScrollOffset - lines);
+        this.markDirty();
+    }
+
+    scrollDown(lines = 1): void {
+        this._mainScrollOffset += lines;
+        this._clampMainScroll();
+        this.markDirty();
+    }
+
+    handleKey(event: KeyEvent): void {
+        switch (event.key) {
+            case 'ArrowUp':
+                this.scrollUp();
+                break;
+            case 'ArrowDown':
+                this.scrollDown();
+                break;
+        }
     }
 
     toggleSidebar(): void {
@@ -109,18 +127,18 @@ export class AppShell extends Widget {
 
         if (mainWidth > 0 && bodyHeight > 0) {
             const originalRect = { ...this._main.rect };
-            (this._main as any)._rect = {
+            this._main.updateRect({
                 x: mainX,
                 y: bodyY - this._mainScrollOffset,
                 width: mainWidth,
                 height: mainContentHeight,
-            };
+            });
             screen.pushClip({ x: mainX, y: bodyY, width: mainWidth, height: bodyHeight });
             try {
                 this._main.render(screen);
             } finally {
                 screen.popClip();
-                (this._main as any)._rect = originalRect;
+                this._main.updateRect(originalRect);
             }
         }
 
@@ -140,11 +158,11 @@ export class AppShell extends Widget {
     private _renderFixedChild(child: Widget | undefined, screen: Screen, rect: Rect): void {
         if (!child || rect.width <= 0 || rect.height <= 0) return;
         const originalRect = { ...child.rect };
-        (child as any)._rect = rect;
+        child.updateRect(rect);
         try {
             child.render(screen);
         } finally {
-            (child as any)._rect = originalRect;
+            child.updateRect(originalRect);
         }
     }
 

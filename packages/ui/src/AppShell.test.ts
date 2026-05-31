@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { Screen } from '@termuijs/core';
-import { Box } from '@termuijs/widgets';
+import { Box, Widget } from '@termuijs/widgets';
 import { AppShell } from './AppShell.js';
 
 const COLORS = {
@@ -18,6 +18,19 @@ function createShell() {
         main: new Box({ bg: COLORS.main }),
         sidebarWidth: 6,
     });
+}
+
+class LinesWidget extends Widget {
+    constructor(private readonly _lines: string[]) {
+        super();
+    }
+
+    protected _renderSelf(screen: Screen): void {
+        const { x, y, width } = this.rect;
+        for (let i = 0; i < this._lines.length; i++) {
+            screen.writeString(x, y + i, this._lines[i].slice(0, width));
+        }
+    }
 }
 
 describe('AppShell', () => {
@@ -90,5 +103,35 @@ describe('AppShell', () => {
         expect(dirtySpy).toHaveBeenCalled();
         expect(shell.rect.width).toBe(40);
         expect(shell.rect.height).toBe(12);
+    });
+
+    it('scrolls main content with arrow keys', () => {
+        const main = new LinesWidget(['A', 'B', 'C', 'D', 'E', 'F']);
+        main.updateRect({ x: 0, y: 0, width: 20, height: 10 });
+
+        const shell = new AppShell({
+            header: new Box({ bg: COLORS.header }),
+            footer: new Box({ bg: COLORS.footer }),
+            main,
+            sidebarWidth: 6,
+        });
+
+        shell.updateRect({ x: 0, y: 0, width: 20, height: 6 });
+
+        const firstScreen = new Screen(20, 6);
+        shell.render(firstScreen);
+        expect(firstScreen.back[1][0].char).toBe('A');
+
+        shell.handleKey({ key: 'ArrowDown', ctrl: false, alt: false } as any);
+
+        const secondScreen = new Screen(20, 6);
+        shell.render(secondScreen);
+        expect(secondScreen.back[1][0].char).toBe('B');
+
+        shell.handleKey({ key: 'ArrowUp', ctrl: false, alt: false } as any);
+
+        const thirdScreen = new Screen(20, 6);
+        shell.render(thirdScreen);
+        expect(thirdScreen.back[1][0].char).toBe('A');
     });
 });
