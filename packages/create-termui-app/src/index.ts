@@ -8,8 +8,8 @@ import { getBuiltinThemeNames } from '@termuijs/tss';
 import { textPrompt, selectPrompt, multiSelectPrompt } from './prompts.js';
 import { generateProject, type ProjectConfig } from './templates.js';
 
-const TEMPLATES = ['Empty (start from scratch)', 'Dashboard (real-time data)', 'Interactive Tool (forms, prompts)', 'CLI Wrapper (wrap existing CLI)'];
-const TEMPLATE_KEYS = ['empty', 'dashboard', 'interactive-tool', 'cli-wrapper'] as const;
+const TEMPLATES = ['Empty (start from scratch)', 'Dashboard (real-time data)', 'Interactive Tool (forms, prompts)', 'CLI Wrapper (wrap existing CLI)', 'File Manager (tree, preview, picker)'];
+const TEMPLATE_KEYS = ['empty', 'dashboard', 'interactive-tool', 'cli-wrapper', 'file-manager'] as const;
 const FEATURES = ['Screen Router', 'Data Providers', 'Hot Reload'];
 
 async function main() {
