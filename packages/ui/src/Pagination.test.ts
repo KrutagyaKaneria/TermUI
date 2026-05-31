@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
+import { Screen } from '@termuijs/core';
 import { Pagination } from './Pagination.js';
 
 describe('Pagination', () => {
-    it('renders page/total text', async () => {
+    it('renders page/total text', () => {
         const p = new Pagination(3, 10);
         p.updateRect({ x: 0, y: 0, width: 20, height: 1 });
-        const { Screen } = await import('@termuijs/core');
         const screen = new Screen(20, 1);
         p.render(screen);
         const rendered = screen.back[0].map((c: { char: string }) => c.char).join('');

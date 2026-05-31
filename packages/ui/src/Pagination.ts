@@ -60,5 +60,3 @@ export class Pagination extends Widget {
         screen.writeString(x, y, text.slice(0, width), attrs);
     }
 }
-
-export default Pagination;
