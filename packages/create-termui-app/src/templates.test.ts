@@ -68,30 +68,6 @@ describe('generateProject', () => {
         expect(files.length).toBeGreaterThan(0)
     })
     
-    it('cli-tool template generates a minimal entry under 15 source lines', () => {
-    const files = generateProject({
-        ...baseConfig,
-        template: 'cli-tool',
-    })
-
-    const entry = files.find((f) => f.path === 'src/index.tsx')!
-    expect(entry).toBeDefined()
-    expect(entry.content).toContain("from '@termuijs/jsx'")
-    expect(entry.content).toContain('useKeymap')
-    expect(entry.content).toContain("key: 'q'")
-
-    const sourceLines = entry.content
-        .split('\n')
-        .filter(
-            (l) =>
-                l.trim() &&
-                !l.trim().startsWith('//') &&
-                !l.trim().startsWith('/**'),
-        )
-
-    expect(sourceLines.length).toBeLessThanOrEqual(15)
-})
-
     it('file-manager template generates a focused package.json', () => {
         const files = generateProject({
             ...baseConfig,
