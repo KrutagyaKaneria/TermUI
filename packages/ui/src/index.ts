@@ -117,6 +117,9 @@ export type { AppShellOptions } from './AppShell.js';
 export { Pagination } from './Pagination.js';
 export type { PaginationOptions } from './Pagination.js';
 
+export { ScalePrompt } from './ScalePrompt.js';
+export type { ScalePromptOptions } from './ScalePrompt.js';
+
 export { SearchableSelect } from './SearchableSelect.js';
 export { Toggle } from './Toggle.js';
 export type { ToggleOptions } from './Toggle.js';
