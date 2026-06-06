@@ -10,6 +10,9 @@ describe('prompts', () => {
     let mockRl: any;
     
     beforeEach(() => {
+        if (!Object.getOwnPropertyDescriptor(process.stdin, 'isTTY')) {
+            Object.defineProperty(process.stdin, 'isTTY', { configurable: true, get: () => undefined });
+        }
         vi.spyOn(process.stdin, 'isTTY', 'get').mockReturnValue(true);
         vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
         
