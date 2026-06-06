@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 // @ts-expect-error — pre-existing monorepo DTS issue
-import { Screen, type KeyEvent } from '@termuijs/core';
+import { Screen, type KeyEvent, caps } from '@termuijs/core';
 import { EditablePrompt } from './EditablePrompt.js';
 
 const MIXED_CHOICES = [
@@ -215,18 +215,20 @@ describe('EditablePrompt', () => {
             const screen = new Screen(50, 10);
             prompt.updateRect({ x: 0, y: 0, width: 50, height: 10 });
 
+            const focusMarker = caps.unicode ? '❯' : '>';
+
             // At index 0
             prompt.render(screen);
             let row0 = screen.back[0].map((c: any) => c.char).join('').trim(); // Cell type required for screen back buffer rendering
-            expect(row0).toContain('❯');
+            expect(row0).toContain(focusMarker);
 
             // Navigate down
             prompt.handleKey({ key: 'down' } as Partial<KeyEvent> as KeyEvent);
             prompt.render(screen);
             row0 = screen.back[0].map((c: any) => c.char).join('').trim(); // Cell type required for screen back buffer rendering
             const row1 = screen.back[1].map((c: any) => c.char).join('').trim(); // Cell type required for screen back buffer rendering
-            expect(row0).not.toContain('❯');
-            expect(row1).toContain('❯');
+            expect(row0).not.toContain(focusMarker);
+            expect(row1).toContain(focusMarker);
         });
 
         it('navigates up through items', () => {
@@ -240,12 +242,14 @@ describe('EditablePrompt', () => {
             // Navigate up
             prompt.handleKey({ key: 'up' } as Partial<KeyEvent> as KeyEvent);
 
+            const focusMarker = caps.unicode ? '❯' : '>';
+
             const screen = new Screen(50, 10);
             prompt.updateRect({ x: 0, y: 0, width: 50, height: 10 });
             prompt.render(screen);
 
             const row1 = screen.back[1].map((c: any) => c.char).join('').trim(); // Cell type required for screen back buffer rendering
-            expect(row1).toContain('❯');
+            expect(row1).toContain(focusMarker);
         });
 
         it('does not navigate while editing', () => {
@@ -256,13 +260,24 @@ describe('EditablePrompt', () => {
             prompt.handleKey({ key: 'down' } as Partial<KeyEvent> as KeyEvent);
             prompt.handleKey({ key: 'enter' } as Partial<KeyEvent> as KeyEvent); // Enter edit mode
 
+            const focusMarker = caps.unicode ? '❯' : '>';
+            const screen = new Screen(50, 10);
+            prompt.updateRect({ x: 0, y: 0, width: 50, height: 10 });
+
+            // Render before navigation attempts
+            prompt.render(screen);
+            let row1 = screen.back[1].map((c: any) => c.char).join('').trim(); // Cell type required for screen back buffer rendering
+            expect(row1).toContain('_'); // Verify editing cursor is visible
+
             // Try to navigate
             prompt.handleKey({ key: 'down' } as Partial<KeyEvent> as KeyEvent);
             prompt.handleKey({ key: 'up' } as Partial<KeyEvent> as KeyEvent);
 
-            // Should still be editing text field (index 1)
-            const result = prompt.result;
-            // After submitting edit, value should still be at text field's initial value
+            // Verify focus and editing state unchanged
+            prompt.render(screen);
+            row1 = screen.back[1].map((c: any) => c.char).join('').trim(); // Cell type required for screen back buffer rendering
+            expect(row1).toContain(focusMarker); // Still focused on row 1
+            expect(row1).toContain('_'); // Still in edit mode
         });
     });
 

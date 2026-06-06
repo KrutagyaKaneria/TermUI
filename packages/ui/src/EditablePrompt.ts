@@ -55,7 +55,7 @@ export class EditablePrompt extends Widget {
         this._textValues = {};
 
         for (const choice of this._choices) {
-            if (choice.type === 'text' && choice.initial) {
+            if (choice.type === 'text' && choice.initial !== undefined) {
                 this._textValues[choice.name] = choice.initial;
             }
         }
@@ -63,8 +63,10 @@ export class EditablePrompt extends Widget {
 
     get result(): EditablePromptResult {
         return {
-            selected: Array.from(this._checkedNames),
-            values: this._textValues,
+            selected: this._choices
+                .filter(choice => choice.type === 'checkbox' && this._checkedNames.has(choice.name))
+                .map(choice => choice.name),
+            values: { ...this._textValues }, // shallow copy to prevent external mutation
         };
     }
 
