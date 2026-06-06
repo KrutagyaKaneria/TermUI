@@ -69,4 +69,23 @@ describe('LoadingDots', () => {
         const row = screen.back[0].map(c => c.char).join('');
         expect(row).toContain('Thinking.  ');
     });
+
+    it('setLabel marks widget dirty', () => {
+        const ld = new LoadingDots({}, { label: 'Loading' });
+    
+        ld.clearDirty();
+        ld.setLabel('Updated');
+    
+        expect(ld.isDirty).toBe(true);
+    });
+    
+    it('does not mark dirty when label is unchanged', () => {
+        const ld = new LoadingDots({}, { label: 'Loading' });
+    
+        ld.clearDirty();
+        ld.setLabel('Loading');
+    
+        expect(ld.isDirty).toBe(false);
+    });
+    
 });
