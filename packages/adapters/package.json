@@ -52,6 +52,7 @@
     "openai": "^4.0.0",
     "@anthropic-ai/sdk": "^0.39.0",
     "chalk": "^5.0.0",
+    "clipboardy": "^3.0.0",
     "dotenv": "^16.0.0",
     "simple-git": "^3.27.0",
     "keytar": "^7.9.0",
@@ -77,6 +78,9 @@
       "optional": true
     },
     "chalk": {
+      "optional": true
+    },
+    "clipboardy": {
       "optional": true
     },
     "dotenv": {

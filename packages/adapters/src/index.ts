@@ -23,6 +23,8 @@ export type { UseKeychainResult } from './keychain/index.js'
 export { zodValidator } from './zod/index.js'
 export type { PromptValidator } from './zod/index.js'
 export { chalkToTermUI } from './chalk/index.js'
+export { useClipboard } from './clipboardy/index.js'
+export type { UseClipboardResult } from './clipboardy/index.js'
 
 export { useAI } from './ai/index.js'
 export type {
