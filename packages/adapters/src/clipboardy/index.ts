@@ -1,14 +1,10 @@
 import { createRequire } from 'node:module'
+import type Clipboardy from 'clipboardy'
 
 export interface UseClipboardResult {
   read: () => Promise<string>
   write: (text: string) => Promise<void>
   lastCopied: string | null
-}
-
-interface ClipboardyModule {
-  read: () => Promise<string>
-  write: (text: string) => Promise<void>
 }
 
 function isMissingClipboardyError(error: unknown): error is NodeJS.ErrnoException {
@@ -20,10 +16,12 @@ function isMissingClipboardyError(error: unknown): error is NodeJS.ErrnoExceptio
   )
 }
 
-function resolveClipboardy(): ClipboardyModule {
+function resolveClipboardy(): Clipboardy {
   try {
     const require = createRequire(import.meta.url)
-    const loaded = require('clipboardy') as ClipboardyModule | { default: ClipboardyModule }
+    // clipboardy can be returned as either a CommonJS export or ESM default export.
+    // Narrow the runtime-loaded module shape for both cases.
+    const loaded = require('clipboardy') as Clipboardy | { default: Clipboardy }
     return 'default' in loaded ? loaded.default : loaded
   } catch (error) {
     if (isMissingClipboardyError(error)) {
