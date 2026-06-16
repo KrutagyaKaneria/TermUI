@@ -66,6 +66,21 @@ describe('createStore', () => {
         expect(spy).not.toHaveBeenCalled()
     })
 
+    it('subscribeOnce fires only once', () => {
+        const useStore = createStore((set) => ({
+            count: 0,
+            inc: () => set((s) => ({ count: s.count + 1 })),
+        }))
+
+        const spy = vi.fn()
+        useStore.subscribeOnce(spy)
+
+        useStore.getState().inc()
+        useStore.getState().inc()
+
+        expect(spy).toHaveBeenCalledOnce()
+    })
+
     it('multiple subscribers all get notified', () => {
         const useStore = createStore((set) => ({
             x: 0,

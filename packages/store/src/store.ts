@@ -166,6 +166,8 @@ export interface Store<T> {
     setState: SetState<T>;
     /** Subscribe to state changes */
     subscribe(listener: Listener<T>): () => void;
+    /** Subscribe once — listener fires on the next change and is immediately unsubscribed */
+    subscribeOnce(listener: Listener<T>): () => void;
     /** Destroy the store and remove all listeners */
     destroy(): void;
     /** Create a memoized selector — subscribers are notified only when the derived value changes */
@@ -351,6 +353,27 @@ export function createStore<T extends object>(
         };
     };
 
+    const subscribeOnce = (listener: Listener<T>): (() => void) => {
+        let unsub: (() => void) | null = null;
+        const wrapper: Listener<T> = (state, prevState) => {
+            try {
+                listener(state, prevState);
+            } finally {
+                if (unsub) {
+                    unsub();
+                    unsub = null;
+                }
+            }
+        };
+        unsub = subscribe(wrapper);
+        return () => {
+            if (unsub) {
+                unsub();
+                unsub = null;
+            }
+        };
+    };
+
     const destroy = (): void => {
         listeners.clear();
         if (writeTimeout) {
@@ -425,7 +448,7 @@ export function createStore<T extends object>(
         };
     };
 
-    const store: Store<T> = { getState, setState, subscribe, destroy, computed, reset, getInitialState };
+    const store: Store<T> = { getState, setState, subscribe, subscribeOnce, destroy, computed, reset, getInitialState };
 
     // Create the hook function
     function useStore(): T;
@@ -458,6 +481,7 @@ export function createStore<T extends object>(
     (useStore as any).getState = getState;
     (useStore as any).setState = setState;
     (useStore as any).subscribe = subscribe;
+    (useStore as any).subscribeOnce = subscribeOnce;
     (useStore as any).destroy = destroy;
     (useStore as any).computed = computed;
     (useStore as any).reset = reset;
@@ -474,6 +498,7 @@ export interface UseStore<T> {
     getState: GetState<T>;
     setState: SetState<T>;
     subscribe(listener: Listener<T>): () => void;
+    subscribeOnce(listener: Listener<T>): () => void;
     destroy(): void;
     computed<U>(selector: Selector<T, U>): Computed<U>;
     reset(): void;
