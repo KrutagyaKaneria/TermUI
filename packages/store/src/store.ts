@@ -356,14 +356,12 @@ export function createStore<T extends object>(
     const subscribeOnce = (listener: Listener<T>): (() => void) => {
         let unsub: (() => void) | null = null;
         const wrapper: Listener<T> = (state, prevState) => {
-            try {
-                listener(state, prevState);
-            } finally {
-                if (unsub) {
-                    unsub();
-                    unsub = null;
-                }
+            const currentUnsub = unsub;
+            if (currentUnsub) {
+                currentUnsub();
+                unsub = null;
             }
+            listener(state, prevState);
         };
         unsub = subscribe(wrapper);
         return () => {
