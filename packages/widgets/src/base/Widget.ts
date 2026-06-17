@@ -33,6 +33,12 @@ export interface WidgetEvents {
     unmount: void;
 }
 
+export interface RenderStats {
+    renderCount: number;
+    lastDurationMs: number;
+    totalDurationMs: number;
+}
+
 let _widgetIdCounter = 0;
 
 /** Reset the widget ID counter (for testing only). */
@@ -105,6 +111,12 @@ export abstract class Widget {
      * Newly created widgets start dirty.
      */
     protected _dirty = true;
+    /** Render profiling statistics */
+    private _renderStats: RenderStats = {
+        renderCount: 0,
+        lastDurationMs: 0,
+        totalDurationMs: 0,
+    };
 
     /** Enable animated layout transitions for size/position changes */
     public layoutTransition: Partial<SpringConfig> | SpringPresetName | boolean = false;
@@ -119,6 +131,17 @@ export abstract class Widget {
     /** Check if this widget is currently active (focused) */
     isActive(): boolean {
         return this.isFocused;
+    }
+
+    getRenderStats(): RenderStats {
+        return { ...this._renderStats };
+    }
+
+    getAverageRenderDuration(): number {
+        return this._renderStats.renderCount === 0
+            ? 0
+            : this._renderStats.totalDurationMs /
+                this._renderStats.renderCount;
     }
 
     /** Get the current style */
@@ -226,7 +249,12 @@ export abstract class Widget {
 
         // Render own content with error isolation
         try {
+            const start = performance.now();
             this._renderSelf(screen);
+            const duration = performance.now() - start;
+            this._renderStats.renderCount++;
+            this._renderStats.lastDurationMs = duration;
+            this._renderStats.totalDurationMs += duration;
             this._renderError = null;
             this._dirty = false;
         } catch (err) {

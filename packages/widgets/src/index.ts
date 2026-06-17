@@ -5,6 +5,7 @@
 // ── Base ──────────────────────────────────────────────
 export { Widget, _resetWidgetIdCounter } from './base/Widget.js';
 export type { WidgetEvents } from './base/Widget.js';
+export type { RenderStats } from './base/Widget.js';
 
 // ── Display Widgets ───────────────────────────────────
 export { Box } from './display/Box.js';
