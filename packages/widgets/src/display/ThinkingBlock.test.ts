@@ -63,4 +63,83 @@ describe('ThinkingBlock', () => {
         expect(secondRow?.[0]?.char).toBe('|');
     });
 
+    it('toggles back to collapsed state on repeated Enter presses', () => {
+        const block = new ThinkingBlock();
+
+        block.handleKey(key('enter'));
+        block.handleKey(key('enter'));
+
+        const screen = render(block);
+
+        expect(screen.back[0]?.[0]?.char).toBe('[');
+    });
+
+    it('toggles when pressing t', () => {
+        const block = new ThinkingBlock();
+
+        block.handleKey(key('t'));
+
+        const screen = render(block);
+
+        expect(['┌', '+']).toContain(screen.back[0]?.[0]?.char);
+    });
+
+    it('ignores unsupported keys', () => {
+        const block = new ThinkingBlock();
+
+        block.handleKey(key('escape'));
+
+        const screen = render(block);
+
+        expect(screen.back[0]?.[0]?.char).toBe('[');
+    });
+
+    it('marks dirty after appendText', () => {
+        const block = new ThinkingBlock();
+
+        block.clearDirty();
+
+        block.appendText('Hello');
+
+        expect(block.isDirty).toBe(true);
+    });
+
+    it('marks dirty after setStreaming', () => {
+        const block = new ThinkingBlock();
+
+        block.clearDirty();
+
+        block.setStreaming(true);
+
+        expect(block.isDirty).toBe(true);
+    });
+
+    it('renders multiline content when expanded', () => {
+        const block = new ThinkingBlock({
+            thinking: 'Line 1\nLine 2',
+        });
+
+        block.handleKey(key('enter'));
+
+        const screen = render(block);
+
+        const output = screen.back
+            .map(row => row.map(c => c.char).join(''))
+            .join('\n');
+
+        expect(output).toContain('Line 1');
+        expect(output).toContain('Line 2');
+    });
+
+    it('toggles back to collapsed state when pressing t twice', () => {
+        const block = new ThinkingBlock();
+
+        block.handleKey(key('t'));
+        block.handleKey(key('t'));
+
+        const screen = render(block);
+
+        expect(screen.back[0]?.[0]?.char).toBe('[');
+    });
+
 });
