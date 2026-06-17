@@ -19,13 +19,12 @@ function isMissingClipboardyError(error: unknown): error is NodeJS.ErrnoExceptio
   )
 }
 
-function resolveClipboardy(): ClipboardyModule {  try {
+function resolveClipboardy(): ClipboardyModule {
+  try {
     const require = createRequire(import.meta.url)
     // clipboardy can be returned as either a CommonJS export or ESM default export.
     // Narrow the runtime-loaded module shape for both cases.
-    const loaded = require('clipboardy') as ClipboardyModule | {
-  default: ClipboardyModule
-}
+    const loaded = require('clipboardy') as ClipboardyModule | { default: ClipboardyModule }
     return 'default' in loaded ? loaded.default : loaded
   } catch (error) {
     if (isMissingClipboardyError(error)) {
