@@ -8,13 +8,16 @@ export function shallow<U>(a: U, b: U): boolean {
   if (typeof a !== 'object' || a === null) return false
   if (typeof b !== 'object' || b === null) return false
 
-  const aKeys = Object.keys(a as any)
-  const bKeys = Object.keys(b as any)
+  const aRec = a as Record<string, unknown>
+  const bRec = b as Record<string, unknown>
+  const aKeys = Object.keys(aRec)
+  const bKeys = Object.keys(bRec)
   if (aKeys.length !== bKeys.length) return false
 
+  const bKeysSet = new Set(bKeys)
   for (const key of aKeys) {
-    if (!bKeys.includes(key)) return false
-    if (!Object.is((a as any)[key], (b as any)[key])) return false
+    if (!bKeysSet.has(key)) return false
+    if (!Object.is(aRec[key], bRec[key])) return false
   }
 
   return true
