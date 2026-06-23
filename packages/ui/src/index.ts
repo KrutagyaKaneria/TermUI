@@ -28,15 +28,6 @@ export { Slider, RangeInput } from './Slider.js';
 export { Divider } from './Divider.js';
 export type { DividerOptions } from './Divider.js';
 
-export { ShortcutManager } from "./ShortcutManager.js";
-export type { Shortcut as ShortcutManagerItem } from "./ShortcutManager.js";
-
-export { NotificationHistory } from "./NotificationHistory.js";
-
-export type {
-    Notification as NotificationHistoryItem,
-    NotificationType
-} from "./NotificationHistory.js";
 
 export { Spacer } from './Spacer.js';
 
@@ -99,8 +90,6 @@ export type { FormField, FormOptions } from './Form.js';
 export { CommandPalette } from './CommandPalette.js';
 export type { Command, CommandPaletteOptions } from './CommandPalette.js';
 
-export { useCommandPalette } from './hooks/useCommandPalette.js';
-export type { UseCommandPaletteOptions, UseCommandPaletteReturn } from './hooks/useCommandPalette.js';
 
 export { prompt, NonInteractiveError } from './prompts.js';
 export type { TextPromptOptions, ConfirmPromptOptions, SelectPromptOptions } from './prompts.js';
@@ -246,24 +235,8 @@ export type { SearchInputOptions } from './SearchInput.js';
 // -- External Theme / Stylesheet Engine --
 export * from '@termuijs/tss';
 
-export type { VimMode } from './vim_modes.js';
-
 export { ChatThread } from './ChatThread.js';
 export type { ChatThreadOptions } from './ChatThread.js';
 export { TokenUsage } from './TokenUsage.js';
 export type { TokenUsageOptions } from './TokenUsage.js';
 
-export { ThemeEditor } from "./ThemeEditor.js";
-export type { ThemeConfig } from "./ThemeEditor.js";
-export { SearchPanel } from "./SearchPanel.js";
-export type { SearchPanelOptions } from "./SearchPanel.js";
-
-export { Workspace } from "./Workspace.js";
-export type { WorkspaceOptions } from "./Workspace.js";
-
-export { createValidator } from "./FormValidator.js";
-export type {
-  ValidationRule,
-  ValidationSchema,
-  ValidationResult,
-} from "./FormValidator.js";

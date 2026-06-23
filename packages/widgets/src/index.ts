@@ -65,8 +65,7 @@ export type { SliderOptions } from "./input/Slider.js";
 export { RangeInput } from "./input/RangeInput.js";
 export type { RangeInputOptions } from "./input/RangeInput.js";
 export { TextInput } from './input/TextInput.js';
-export { DatePicker } from "./input/DatePicker.js";
-export type { DatePickerOptions } from "./input/DatePicker.js";
+export type { VimMode } from './input/vim.js';
 export { Knob } from "./input/Knob.js";
 export type { KnobOptions } from "./input/Knob.js";
 export { PinInput } from "./input/PinInput.js";
@@ -287,13 +286,6 @@ export type {
 } from './feedback/ProgressColumn.js';
 export { Progress } from './feedback/Progress.js';
 
-export { ProgressDashboard } from "./feedback/ProgressDashboard.js";
-
-export type {
-    ProgressTask as DashboardProgressTask,
-    TaskStatus as DashboardTaskStatus,
-    ProgressDashboardOptions
-} from "./feedback/ProgressDashboard.js";
 
 export type {
     ProgressProps,
