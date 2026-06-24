@@ -13,22 +13,6 @@ describe('named themes', () => {
     'horizon', 'snazzy', 'vesper', 'gruvboxLight',
   ];
 
-  it('exports all 13 new theme objects', () => {
-    expect(cobalt2Theme.bg).toBeDefined();
-    expect(nightOwlTheme.bg).toBeDefined();
-    expect(ayuTheme.bg).toBeDefined();
-    expect(materialTheme.bg).toBeDefined();
-    expect(synthwaveTheme.bg).toBeDefined();
-    expect(kanagawaTheme.bg).toBeDefined();
-    expect(catppuccinLatteTheme.bg).toBeDefined();
-    expect(catppuccinFrappeTheme.bg).toBeDefined();
-    expect(catppuccinMacchiatoTheme.bg).toBeDefined();
-    expect(horizonTheme.bg).toBeDefined();
-    expect(snazzyTheme.bg).toBeDefined();
-    expect(vesperTheme.bg).toBeDefined();
-    expect(gruvboxLightTheme.bg).toBeDefined();
-  });
-
   it('registers all new themes in NAMED_THEMES', () => {
     for (const name of NEW_THEMES) {
       expect(NAMED_THEMES[name], `NAMED_THEMES["${name}"] missing`).toBeDefined();

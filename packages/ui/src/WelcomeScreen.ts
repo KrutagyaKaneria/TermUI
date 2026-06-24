@@ -28,7 +28,6 @@ export interface WelcomeScreenOptions {
 }
 
 export class WelcomeScreen extends Widget {
-    private _title: string;
     private _subtitle: string;
     private _tagline: string;
     private _keymap: KeymapHint[];
@@ -36,11 +35,10 @@ export class WelcomeScreen extends Widget {
 
     constructor(options: WelcomeScreenOptions) {
         super(mergeStyles(defaultStyle(), { flexGrow: 1, ...options.style }));
-        this._title    = options.title;
         this._subtitle = options.subtitle ?? '';
         this._tagline  = options.tagline  ?? '';
         this._keymap   = options.keymap   ?? [];
-        this._bigText  = new BigText(this._title);
+        this._bigText  = new BigText(options.title);
     }
 
     protected _renderSelf(screen: Screen): void {

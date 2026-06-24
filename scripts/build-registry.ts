@@ -14,7 +14,6 @@ export interface RegistryEntry {
   name: string;
   slug: string;
   package: string;
-  importPath: string;
   category: 'display' | 'input' | 'feedback' | 'layout' | 'data' | 'hook' | 'template';
   description: string;
   tags: string[];
@@ -124,7 +123,6 @@ export function buildRegistryEntries(): RegistryEntry[] {
         name,
         slug,
         package: pkg,
-        importPath: pkg,
         category: detectCategory(path),
         description: extractDescription(content, name),
         tags: [detectCategory(path), slug],

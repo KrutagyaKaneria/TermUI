@@ -18,7 +18,6 @@ import { Widget } from '@termuijs/widgets';
 
 export interface SetupStep {
     title: string;
-    description?: string;
     render: () => Widget;
 }
 
