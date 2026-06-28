@@ -26,7 +26,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const mod = await getDocPage(slug)
   if (!mod) return {}
   const fm = mod.frontmatter as { title?: string; description?: string } | undefined
-  return { title: fm?.title, description: fm?.description }
+  const canonical = `/docs/${slug.join('/')}`
+  return {
+    title: fm?.title,
+    description: fm?.description,
+    alternates: { canonical },
+    openGraph: { title: fm?.title, description: fm?.description, url: canonical, type: 'article' },
+    twitter: { card: 'summary_large_image', title: fm?.title, description: fm?.description },
+  }
 }
 
 const SECTIONS = [
@@ -200,9 +207,37 @@ export default async function DocPage({ params }: Props) {
   if (!mod) notFound()
 
   const MDX = mod.default
+  const fm = mod.frontmatter as { title?: string; description?: string } | undefined
+
+  const SITE = 'https://termui.io'
+  const section = slug[0] ?? ''
+  const sectionLabel = section.replace(/(^|-)([a-z])/g, (_m, _s, c) => ' ' + c.toUpperCase()).trim()
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Docs', item: `${SITE}/docs` },
+          { '@type': 'ListItem', position: 2, name: sectionLabel || 'Docs', item: `${SITE}/docs/${section}` },
+          { '@type': 'ListItem', position: 3, name: fm?.title ?? slug.join('/'), item: `${SITE}/docs/${slug.join('/')}` },
+        ],
+      },
+      {
+        '@type': 'TechArticle',
+        headline: fm?.title ?? slug.join('/'),
+        description: fm?.description,
+        url: `${SITE}/docs/${slug.join('/')}`,
+        inLanguage: 'en',
+        isPartOf: { '@type': 'WebSite', name: 'TermUI', url: SITE },
+        about: { '@type': 'SoftwareApplication', name: 'TermUI', applicationCategory: 'DeveloperApplication' },
+      },
+    ],
+  }
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <DocBreadcrumb />
       <div className="doc-content-wrapper">
         <MDX components={getMDXComponents()} />

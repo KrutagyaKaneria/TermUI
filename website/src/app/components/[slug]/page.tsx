@@ -46,9 +46,14 @@ export async function generateMetadata({
     const { slug } = await params
     const comp = registry.find((c) => c.slug === slug)
     if (!comp) return {}
+    const canonical = `/components/${comp.slug}`
+    const title = `${comp.name} · TermUI`
     return {
-        title: `${comp.name} — TermUI`,
+        title,
         description: comp.description,
+        alternates: { canonical },
+        openGraph: { title, description: comp.description, url: canonical, type: 'article' },
+        twitter: { card: 'summary_large_image', title, description: comp.description },
     }
 }
 
@@ -244,8 +249,33 @@ export default async function ComponentDetailPage({
           ])
         : apiProps
 
+    const SITE = 'https://termui.io'
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'BreadcrumbList',
+                itemListElement: [
+                    { '@type': 'ListItem', position: 1, name: 'Components', item: `${SITE}/components` },
+                    { '@type': 'ListItem', position: 2, name: comp.name, item: `${SITE}/components/${comp.slug}` },
+                ],
+            },
+            {
+                '@type': 'SoftwareSourceCode',
+                name: comp.name,
+                description: comp.description,
+                codeRepository: 'https://github.com/Karanjot786/TermUI',
+                programmingLanguage: 'TypeScript',
+                runtimePlatform: 'Node.js',
+                url: `${SITE}/components/${comp.slug}`,
+                isPartOf: { '@type': 'SoftwareApplication', name: 'TermUI', applicationCategory: 'DeveloperApplication' },
+            },
+        ],
+    }
+
     return (
         <div className="cd-page">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
             {/* Breadcrumb */}
             <nav className="cd-breadcrumb" aria-label="Breadcrumb">
                 <Link href="/components" className="cd-bc-link">components</Link>
