@@ -3,6 +3,7 @@ export interface CliArgs {
     template?: string;
     theme?: string;
     yes: boolean;
+    version?: boolean;
     dir?: string;
 
     command?: string;
@@ -43,7 +44,12 @@ export function parseArgs(argv: string[]): CliArgs {
         yes: false,
         dryRun: false,
     };
-
+       
+    if (argv.includes('--version') || argv.includes('-v')) {
+        args.version = true;
+        return args;
+    }
+    
     if (argv[0] === "add") {
         const positional: string[] = [];
 
