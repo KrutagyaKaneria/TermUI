@@ -138,6 +138,17 @@ Docs reference symbols the code never exports. A reader who copies them hits err
 - `dev-server` package card links to `/docs/dev-server/overview` which does not exist. Pre-existing 404. Either create the doc or point the card at `guides/dev-server`.
 - `adapters/overview.mdx` description string lists RAGChat/commander (part of Pattern 2).
 
+### Known broken routes (TermUI_Docs repo)
+
+The following routes return 404 and need sidebar/route registration fixes in `TermUI_Docs` repo `src/content/pages.ts`:
+
+- `/docs/getting-started/quickstart` → likely missing or misnamed file
+- `/docs/guides/theming` → likely missing or misnamed file
+- `/docs/guides/routing` → likely missing or misnamed file
+- `/docs/motion/overview` → likely missing or misnamed file
+- `/docs/jsx/overview` → likely missing or misnamed file
+- `/docs/dev-server/overview` → should redirect to `/docs/guides/dev-server` (canonical page exists)
+
 ---
 
 ## Suggested order
