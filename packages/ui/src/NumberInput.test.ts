@@ -68,6 +68,18 @@ describe('NumberInput', () => {
         screen.unmount();
     });
 
+    it('notifies and marks dirty when rawValue is assigned', () => {
+        const onChange = vi.fn();
+        const input = new NumberInput({}, { onChange });
+        const markDirty = vi.spyOn(input, 'markDirty');
+
+        input.rawValue = '42';
+
+        expect(input.rawValue).toBe('42');
+        expect(onChange).toHaveBeenCalledWith(42);
+        expect(markDirty).toHaveBeenCalled();
+    });
+
     it('clamps typed values exposed through numericValue and submit', () => {
         const onChange = vi.fn();
         const onSubmit = vi.fn();
