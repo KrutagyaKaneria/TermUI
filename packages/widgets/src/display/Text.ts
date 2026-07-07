@@ -91,7 +91,7 @@ export class Text extends Widget {
         const allLines = text.split('\n');
 
         // Apply vertical scroll
-        const startLine = Math.min(this._scrollY, allLines.length);
+        const startLine = Math.min(this._scrollY, Math.max(0, allLines.length - 1));
         const visibleLines = allLines.slice(startLine, startLine + height);
 
         for (let i = 0; i < Math.min(visibleLines.length, height); i++) {
