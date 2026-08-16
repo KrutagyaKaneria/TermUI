@@ -16,7 +16,7 @@ We want to thank all the amazing contributors who have helped make TermUI what i
 | <img src="https://avatars.githubusercontent.com/u/179694969?v=4" width="40" height="40" style="border-radius: 50%;" alt="Tomeshwari-02" /> | [@Tomeshwari-02](https://github.com/Tomeshwari-02) | 19 |
 | <img src="https://avatars.githubusercontent.com/u/191742943?v=4" width="40" height="40" style="border-radius: 50%;" alt="Rish-2006" /> | [@Rish-2006](https://github.com/Rish-2006) | 18 |
 | <img src="https://avatars.githubusercontent.com/u/185155652?v=4" width="40" height="40" style="border-radius: 50%;" alt="itssagarK" /> | [@itssagarK](https://github.com/itssagarK) | 18 |
-| <img src="https://avatars.githubusercontent.com/u/177293875?v=4" width="40" height="40" style="border-radius: 50%;" alt="KrutagyaKaneria" /> | [@KrutagyaKaneria](https://github.com/KrutagyaKaneria) | 17 |
+| <img src="https://avatars.githubusercontent.com/u/177293875?v=4" width="40" height="40" style="border-radius: 50%;" alt="KrutagyaKaneria" /> | [@KrutagyaKaneria](https://github.com/KrutagyaKaneria) | 18 |
 | <img src="https://avatars.githubusercontent.com/u/67773620?v=4" width="40" height="40" style="border-radius: 50%;" alt="Satvik-art-creator" /> | [@Satvik-art-creator](https://github.com/Satvik-art-creator) | 16 |
 | <img src="https://avatars.githubusercontent.com/u/211445755?v=4" width="40" height="40" style="border-radius: 50%;" alt="madhuri-perumalla" /> | [@madhuri-perumalla](https://github.com/madhuri-perumalla) | 16 |
 | <img src="https://avatars.githubusercontent.com/u/166059220?v=4" width="40" height="40" style="border-radius: 50%;" alt="kajalpa302005" /> | [@kajalpa302005](https://github.com/kajalpa302005) | 13 |
